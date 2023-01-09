@@ -1,0 +1,78 @@
+.Padre { /* 100% de la altura de la pantalla */
+    text-align: center;
+    width: 80%;
+    justify-content: center;
+    margin-left: auto;
+    margin-right: auto;
+    overflow: hidden;
+  
+    
+  }
+.Form {
+  
+  border-radius:20px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 70%;
+  border: 5px solid rgba(255, 255, 255, 0.889);
+  background-color: rgba(255, 205, 5, 0.866);
+  display: flex; /* permite centrar el formulario en la pantalla */
+  justify-content: center; /* centra el formulario horizontalmente */
+  padding: 1% 1%; /* añade un padding izquierdo y derecho del 2% */
+  box-sizing: border-box;
+  }
+
+.Form label,
+.Form input {
+  display: block;
+
+}
+
+.Form label {
+  margin-bottom: 0.2rem;
+}
+
+.Form input {
+  margin-bottom: .5rem;
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.Form fieldset {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: .5rem;
+  }
+  
+  .Form legend {
+    font-weight: bold;
+    margin-bottom: 0.2rem;
+  }
+  
+  .Form button[type='submit'] {
+    background-color: #2B74BA;
+    color: white;
+    padding: 0.2rem .2rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    box-sizing: border-box;
+  }
+  
+  .Form button[type='submit']:hover {
+    background-color: #006699;
+    border: 2px solid #fff;
+  }
+  .Padre button{
+    color: white;
+    background-color:#2B74BA;
+    border-radius: 5px;
+    padding-left: 2%;
+    padding-right: 2%;
+    margin-top: 1%;
+    margin-bottom: 2%;
+    border: 1px solid #fff;
+}
+  

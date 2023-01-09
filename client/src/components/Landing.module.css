@@ -1,0 +1,58 @@
+.Landing_page {
+    width: 100%;
+    background-color: rgb(236, 29, 35);
+    margin-top: -21px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    text-align: center;
+}
+
+.pokeball {
+    left: 2%;
+    position: relative;
+    object-fit: cover;
+    transform: scale(11.5);
+    object-fit: cover;
+    z-index: 1;
+    
+
+}
+
+.logo{
+    top: 12%;
+    position: absolute;
+    transform: scale(3.5);
+    z-index: 2;
+    animation: slideIn 2s ease-in-out;
+}
+
+.Landing_page button{
+    position: absolute;
+    left: 50%;
+    bottom: 7%;
+    transform: translate(-40%, 0);
+    color:white;
+    background-color:rgb(44, 114, 184);
+    border-radius: 5px;
+    border: none;
+    padding: 10px;
+    font-size:1.2em;
+    z-index: 4;
+    box-shadow: 0 0 20px 10px rgba(255, 255, 255, 0.5);
+    }
+
+@keyframes slideIn {
+    0% {
+      bottom: -100%;
+      opacity: 0;
+    }
+    100% {
+      bottom: 0;
+      opacity: 1;
+    }
+  }
+
