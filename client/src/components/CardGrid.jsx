@@ -13,7 +13,7 @@ function Grid() {
 
   // Inicializa el estado local de pokemons con la información de allPokemons del store de redux
   const allPokemons = useSelector(state => state.pokemons);
-  const allTypes = useSelector(state => state.types.results);
+  const allTypes = useSelector(state => state.types);
   const [pokemons, setPokemons] = useState(allPokemons);
 
     // Inicializa el estado del tipo de pokemon seleccionado

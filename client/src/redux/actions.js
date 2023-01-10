@@ -10,7 +10,7 @@ export function getAllPokemons(){
 
 export function getAllTypes(){
   return async (dispatch) => {
-      const res = await axios("https://pokeapi.co/api/v2/type");
+      const res = await axios("http://localhost:3001/types");
       return dispatch({ type: "GET_TYPES", payload: res.data });
   }
   
