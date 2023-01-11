@@ -15,3 +15,12 @@ export function getAllTypes(){
   }
   
 }
+
+export function deletePokemon(pokemonId) {
+    return async (dispatch) => {
+       // await axios.delete(`http://localhost:3001/pokemon/${pokemonId}`);
+        return dispatch({ type: "DELETE_POKEMON", payload: pokemonId });
+    }
+}
+
+

@@ -16,6 +16,8 @@ const initialState = {
           ...state,
           types: payload,
         };
+        case "DELETE_POKEMON":
+        return { ...state, pokemons: state.pokemons.filter(p => p.id !== payload) }
      
       default:
         return state;

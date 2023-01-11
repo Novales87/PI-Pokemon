@@ -12,6 +12,7 @@ function Grid() {
   const [pokemonsPerPage] = useState(12);
 
   // Inicializa el estado local de pokemons con la información de allPokemons del store de redux
+  
   const allPokemons = useSelector(state => state.pokemons);
   const allTypes = useSelector(state => state.types);
   const [pokemons, setPokemons] = useState(allPokemons);
@@ -117,7 +118,7 @@ function Grid() {
        <select  value={selectedType} onChange={handleTypeChange}>
           <option value="">Todos</option>
         {allTypes.map(type => (
-          <option key={type.name} value={type.name}>{type.name}</option>
+          <option key={type.id} value={type.name}>{type.id}. {type.name}</option>
         ))}
        </select>
        </fieldset>

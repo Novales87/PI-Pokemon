@@ -4,7 +4,12 @@ import Logo from '../images/poke.png';
 import { useHistory } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 
+
+
+
 function Nav() {
+  
+ 
   // Inicializamos el estado del input de búsqueda con un string vacío
   const [inputValue, setInputValue] = useState('');
   // Obtenemos acceso a la historia del navegador
@@ -27,6 +32,7 @@ function Nav() {
 
   return (
     <div className={style.nav}>
+      
       {/* Al hacer clic en el logotipo, se redirige a la ruta '/home' */}
       <img src={Logo} alt="logo"/>
       <div className={style.busqueda}>
@@ -38,6 +44,7 @@ function Nav() {
         <input placeholder='Buscar' onChange={handleChange} value={inputValue} /> 
         <button disabled={!inputValue}>Buscar</button>
       </form>
+
       </div>
     </div>
   );
