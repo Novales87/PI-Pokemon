@@ -40,8 +40,8 @@
 
 .Detail_container img {
     margin: 3%;
-    transform: scale(3);
-    height: 100%;
+    transform: scale(2);
+    height: 90%;
     z-index: 1;
   }
   

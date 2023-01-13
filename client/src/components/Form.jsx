@@ -241,7 +241,7 @@ const handleImage = (event) => {
   }
   console.log(newPokemon);
 };
-
+const [res, setRes] = useState('');
 const send = () => {
   const missingFields = [];
   
@@ -260,8 +260,9 @@ const send = () => {
     // Send the newPokemon object to the server
     axios.post("http://localhost:3001/pokemon", newPokemon)
       .then((response) => {
-        console.log(response);
+        setRes(<p></p>);
         dispatch(getAllPokemons());
+        setRes(<p>{newPokemon.name} Creado con exito</p>);
       })
       .catch((error) => {
         console.log(error);
@@ -299,6 +300,7 @@ const [inputValue, setInputValue] = useState('');
     <div className={style.Padre} >
       <fieldset>
         <h2>Crear Pokémon</h2>
+        {res !== "" && <p>{res}</p>}
         <label>Nombre</label>
         {errorName !== "" && <p>{errorName}</p>}
         <input key="name" type="text" value={newPokemon.name} onChange={handleName} onBlur={handleName} />
