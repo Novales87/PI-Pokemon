@@ -1,12 +1,15 @@
 .Padre { /* 100% de la altura de la pantalla */
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
     text-align: center;
     width: 80%;
+    align-items: center;
     justify-content: center;
     margin-left: auto;
     margin-right: auto;
     overflow: hidden;
+    color:beige;
+    
   
     
   }
@@ -14,75 +17,41 @@
     width: 35%;
     display: flex;
     flex-direction:column;
+    align-items: center;
     height: fit-content;
+    border-radius: 15px;
+    border: 3px solid white;
+    background-color: red;
     }
-.Form {
-  
-  border-radius:20px;
-  margin-left: auto;
-  margin-right: auto;
-  width: 70%;
-  border: 5px solid rgba(255, 255, 255, 0.889);
-  background-color: rgba(255, 205, 5, 0.866);
-  display: flex; /* permite centrar el formulario en la pantalla */
-  justify-content: center; /* centra el formulario horizontalmente */
-  padding: 1% 1%; /* añade un padding izquierdo y derecho del 2% */
-  box-sizing: border-box;
-  }
 
-.Form label,
-.Form input {
-  display: block;
-
+ .Padre button {
+  margin: 5px;
+  background-color: #4C779A;
+  padding: 5px;
+  border: none;
+  color: white;
+  border-radius: 3px;
 }
 
-.Form label {
-  margin-bottom: 0.2rem;
+input {
+  border: 1px solid white;
 }
 
-.Form input {
-  margin-bottom: .5rem;
-  width: 100%;
-  box-sizing: border-box;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+.Padre .Crear{
+  margin: 5px;
+  background-color:#E7B806;
+  padding-left: 5px;
+  padding-right: 5px;
+  color:beige
 }
-
-.Form fieldset {
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    margin-bottom: .5rem;
-  }
-  
-  .Form legend {
-    font-weight: bold;
-    margin-bottom: 0.2rem;
-  }
-  
-  .Form button[type='submit'] {
-    background-color: #2B74BA;
-    color: white;
-    padding: 0.2rem .2rem;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    box-sizing: border-box;
-  }
-  
-  .Form button[type='submit']:hover {
-    background-color: #006699;
-    border: 2px solid #fff;
-  }
-  .Padre button{
-    color: white;
-    background-color:#2B74BA;
-    border-radius: 5px;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    padding-left: 2%;
-    padding-right: 2%;
-    margin-top:10px;
-    margin-bottom: 2%;
-    border: 1px solid #fff;
+h4{
+  margin:0px;
 }
-  
+.Padre button:hover {
+  background-color: #29689b;
+  transform: scale(1.2);
+  font-weight: 700;
+}
+.Padre :hover{
+  transform: scale(1.1);
+}

@@ -1,4 +1,5 @@
-const axios = require('Axios');
+const axios = require('axios');
+const { Pokemon , Types } = require("../db.js");
 const headers = {
   headers: {
       "accept-encoding": null,/* "accept-encoding" es una cabecera HTTP que se utiliza para indicar al servidor qué tipos de codificación de contenido son aceptables para el cliente. Cuando se establece en "null", se está indicando al servidor que no se acepta ningún tipo de codificación de contenido. Esto significa que el servidor debe enviar la respuesta sin utilizar ningún tipo de compresión, lo que puede resultar en un tamaño de respuesta más grande.*/
@@ -7,14 +8,36 @@ const headers = {
 
 
 
+
+
 async function getPokemons (req, res, next) {
   try {
+    // Obtenemos los Pokémones de la base de datos
+    const pokemonsFromDB = await Pokemon.findAll({
+      include: [{
+        model: Types,
+        attributes: ['name']
+      }]
+    });
+
+    // Procesamos los pokemons de la base de datos para que tengan el mismo formato que los de la API
+    const formattedPokemonsFromDB = pokemonsFromDB.map(pokemon => {
+      return {
+        name: pokemon.name,
+        types: pokemon.types.map(type => type.name),
+        image: pokemon.image,
+        id: pokemon.id,
+        attack: pokemon.attack
+      }
+    });
+
+    // Hacemos una solicitud a la API para obtener los Pokémones
     const response = await axios.get('https://pokeapi.co/api/v2/pokemon?offset=0&limit=40', headers);
 
-    // procesa la respuesta de la API y extrae los nombres y URL de los Pokémon
+    // Procesamos la respuesta de la API y extraemos los nombres y URL de los Pokémones
     const pokemonData = response.data.results;
 
-    // hace una solicitud a la URL de cada Pokémon para obtener sus detalles
+    // Hacemos una solicitud a la URL de cada Pokémon para obtener sus detalles
     const pokemonDetails = await Promise.all(pokemonData.map(async pokemon => {
       const detailsResponse = await axios.get(pokemon.url, headers);
       return {
@@ -26,12 +49,34 @@ async function getPokemons (req, res, next) {
       };
     }));
 
-    // envía los nombres, tipos e imagens de los Pokémones al cliente
-    res.send(pokemonDetails);
+    // Concatenamos los Pokémones de la base de datos con los que vienen de la API
+    const allPokemons = pokemonsFromDB.map(pokemon => {
+      return {
+      name: pokemon.name,
+      types: pokemon.types.map(type => type.name),
+      image: pokemon.image,
+      id: pokemon.id,
+      attack: pokemon.attack,
+      }
+      }).concat(pokemonDetails);
+      res.send(allPokemons);
+    } catch (error) {
+      // Manejamos cualquier error que ocurra durante la solicitud
+      next(error);
+      }
+      }
+
+
+async function savePokemon(req, res) {
+  try {
+      const { name, hp, attack, defense, speed, height, weight, image, typeIds } = req.body;
+      // Crear el Pokemon
+      const newPokemon = await Pokemon.create({ name, hp, attack, defense, speed, height, weight, image });
+      // agregar relaciones con los tipos
+      await newPokemon.addTypes(typeIds);
+      res.json({ message: 'Pokemon created successfully' });
   } catch (error) {
-    // maneja cualquier error que ocurra durante la solicitud
-    res.send(error);
-    next(error);
+      res.status(500).json({ message: 'Error', error });
   }
 }
 
@@ -39,7 +84,7 @@ async function getPokemons (req, res, next) {
 
 
 module.exports = {
-  getPokemons
+  getPokemons, savePokemon
 };
 
 
