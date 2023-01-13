@@ -80,11 +80,52 @@ async function savePokemon(req, res) {
   }
 }
 
+async function getPokemonById (req, res, next) {
+  try {
+    // Obtenemos el ID del Pokémon de la ruta
+    const id = req.params.id;
+console.log(id);
+    // buscamos el Pokemon en la base de datos
+    const pokemonFromDB = await Pokemon.findByPk(id, {
+      include: [{
+        model: Types,
+        attributes: ['name']
+      }]
+    });
+    
+    let pokemon = {};
+    if(pokemonFromDB) {
+        // Procesamos los pokemons de la base de datos para que tengan el mismo formato que los de la API
+        pokemon = {
+          name: pokemonFromDB.name,
+          types: pokemonFromDB.types.map(type => type.name),
+          image: pokemonFromDB.image,
+          id: pokemonFromDB.id,
+          attack: pokemonFromDB.attack
+        }
+    } else {
+        // Hacemos una solicitud a la API para obtener los Pokémones
+        const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${id}`, headers);
+        // Procesamos la respuesta de la API y extraemos los nombres y URL de los Pokémones
+        pokemon = {
+          name: response.data.name,
+          types: response.data.types.map(type => type.type.name),
+          image: response.data.sprites.front_default,
+          id: response.data.id,
+          attack: response.data.stats[1].base_stat
+        };
+    }
+    res.send(pokemon);
+  } catch (error) {
+    // Manejamos cualquier error que ocurra durante la solicitud
+    next(error);
+  }
+}
 
 
 
 module.exports = {
-  getPokemons, savePokemon
+  getPokemons, savePokemon, getPokemonById
 };
 
 

@@ -29,8 +29,32 @@ async function getAllTypes(req, res, next){
   }
 }
 
+async function createType(req, res, next) {
+  try {
+    // Obtenemos el tipo del cuerpo de la solicitud
+    const newType = req.body.type;
+
+    // Verificamos si el tipo ya existe en la tabla
+    const typeFromDB = await Types.findOne({ where: { name: newType }});
+    if (!typeFromDB) {
+      // Si el tipo no existe, lo insertamos en la tabla
+      await Types.create({ name: newType });
+      // Obtenemos todos los tipos de la tabla y los enviamos como respuesta
+      const typesFromDB = await Types.findAll();
+      res.send({message: "Tipo creado con éxito", types: typesFromDB});
+    } else {
+      // Si el tipo ya existe, enviamos una respuesta de error
+      res.status(409).send({ error: "Tipo ya existente" });
+    }
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+}
+
+
 
 
 module.exports = {
-  getAllTypes
+  getAllTypes, createType
 };
