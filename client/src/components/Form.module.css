@@ -1,4 +1,4 @@
-.Padre { /* 100% de la altura de la pantalla */
+.Padre { 
   display: flex;
   flex-direction: column;
     text-align: center;
@@ -13,8 +13,7 @@
   
     
   }
-  .Padre fieldset { /* 100% de la altura de la pantalla */
-    width: 35%;
+  .Padre fieldset { 
     display: flex;
     flex-direction:column;
     align-items: center;

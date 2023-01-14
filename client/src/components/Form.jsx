@@ -26,43 +26,8 @@ function PokeForm() {
   
   const allTypes = useSelector(state => state.types);
   
-/*const handleName = (event) => {
-  const name = event.target.value;
-  if (!name) {
-    alert('debes agregar un nombre');
-    return;
-  }
-  if (!/^[a-zA-Z- ]*$/.test(name)) {
-    alert("Error: solo se permiten letras y guion medio");
-    return;
-  } 
-  setNewPokemon((prevPokemon) => {
-    return {
-      ...prevPokemon,
-      name: name,
-    }
-  });
-} */
 const [errorName, setErrorName] = useState('');
 
-/*const handleName = (event) => {
-  const name = event.target.value;
-  setErrorName('');
-  if (!name) {
-    setErrorName('*Agrega un nombre');
-    return;
-  }
-  if (!/^[a-zA-Z- ]*$/.test(name)) {
-    setErrorName("* solo letras y guiones medios");
-    return;
-  } 
-  setNewPokemon((prevPokemon) => {
-    return {
-      ...prevPokemon,
-      name: name,
-    }
-  });
-}*/
 
 const handleName = (event) => {
   const name = event.target.value.trim();
@@ -83,22 +48,6 @@ const handleName = (event) => {
   });
 }
 
-
-/*const re = /^[0-9]{1,3}$/;
-
-const handleNumber = (event) => {
-  const number = parseInt(event.target.value);
-  if (!re.test(number)) {
-    alert("Error: solo se permiten números de hasta 3 cifras");
-    return;
-  }
-  setNewPokemon((prevPokemon) => {
-    return {
-      ...prevPokemon,
-      hp: number,
-    }
-  });
-}*/
 const [errorNumber, setErrorNumber] = useState('');
 const re = /^[0-9]{1,3}$/;
 
@@ -301,19 +250,6 @@ const [inputValue, setInputValue] = useState('');
     setInputValue(input);
   }
 
-  /*const handleSubmit = async (event) => {
-    event.preventDefault();
-    try {
-      await axios.post('http://localhost:3001/types', { type: inputValue });
-      setResponseMessage(<p>Tipo creado con éxito</p>);
-      setInputValue('');
-      dispatch(getAllTypes());
-    } catch (err) {
-      setResponseMessage(<p>Error al crear tipo, verifique que no exista el tipo</p>);
-    }
-    
-  }
-*/
 
 const handleSubmit = async (event) => {
   event.preventDefault();

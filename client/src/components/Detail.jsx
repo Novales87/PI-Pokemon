@@ -1,25 +1,4 @@
-/* import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { useParams } from 'react-router-dom';
-import { Link } from 'react-router-dom';
-import style from './Detail.module.css' 
-import Cargando from '../images/cargando.gif'
-const Detail = () => {
-  const { id } = useParams(); // Obtienes el id de la ruta (ej. /pokemon/1)
-  const [pokemon, setPokemon] = useState(null);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    axios.get(`http://localhost:3001/pokemon/${id}`)
-      .then(response => {
-        setPokemon(response.data);
-        
-      })
-      .catch(error => {
-        setError(error);
-      });
-  }, [id]); */
-  import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';

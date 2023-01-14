@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import styles from './cardGrid.module.css';
 import PokeCard from './PokeCard';
