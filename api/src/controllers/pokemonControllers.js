@@ -7,9 +7,6 @@ const headers = {
 }
 
 
-
-
-
 async function getPokemons (req, res, next) {
   try {
     // Obtenemos los Pokémones de la base de datos
@@ -199,16 +196,31 @@ async function getPokemonById(req, res, next) {
         }
       }
       
+       
+      async function deletePokemonById(req, res, next) {
+        try {
+          // Obtenemos el ID del Pokémon desde los parámetros de la ruta
+          const { id } = req.params;
+          // Buscamos el Pokémon en la base de datos con ese ID
+          const pokemon = await Pokemon.findByPk(id);
+          // Si existe el Pokémon, lo eliminamos
+          if (pokemon) {
+            await pokemon.destroy();
+            res.json({ message: `Pokemon con id ${id} eliminado exitosamente` });
+          } else {
+            // Si no existe el Pokémon, devolvemos un error
+            res.status(404).json({ message: `Pokemon con id ${id} no encontrado` });
+          }
+        } catch (error) {
+          // Manejamos cualquier error que ocurra durante la solicitud
+          next(error);
+        }
+      }
       
-      
-
-
-
-
 
 
 module.exports = {
-  getPokemons, savePokemon, getPokemonById, getPokemonByName
+  getPokemons, savePokemon, getPokemonById, getPokemonByName, deletePokemonById
 };
 
 

@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import styles from './cardGrid.module.css';
 import PokeCard from './PokeCard';
 import { useSelector, useDispatch } from 'react-redux';
-import { getAllPokemons, getAllTypes } from '../redux/actions';
+import { getAllPokemons, getAllTypes} from '../redux/actions';
 import Cargando from '../images/cargando.gif'
 
 function Grid() {
@@ -16,6 +16,8 @@ function Grid() {
   const allPokemons = useSelector(state => state.pokemons);
   const allTypes = useSelector(state => state.types);
   const [pokemons, setPokemons] = useState(allPokemons);
+  const [filterOption, setFilterOption] = useState("todos");
+
 
     // Inicializa el estado del tipo de pokemon seleccionado
     const [selectedType, setSelectedType] = useState("");
@@ -26,6 +28,8 @@ function Grid() {
   const indexOfLastPokemon = currentPage * pokemonsPerPage;
   const indexOfFirstPokemon = indexOfLastPokemon - pokemonsPerPage;
   const currentPokemons = pokemons.slice(indexOfFirstPokemon, indexOfLastPokemon);
+ 
+
 
   useEffect(() => {
     if (allPokemons.length === 0) {
@@ -37,6 +41,17 @@ function Grid() {
   useEffect(() => {
     setPokemons(allPokemons);
   }, [allPokemons]);
+
+  useEffect(() => {
+    let filteredPokemons = allPokemons;
+    if (filterOption === 'solo los creados en la base de datos') {
+        filteredPokemons = allPokemons.filter(pokemon => !Number.isInteger(pokemon.id));
+    } else if (filterOption === 'solo los traidos de la Api') {
+        filteredPokemons = allPokemons.filter(pokemon => Number.isInteger(pokemon.id));
+    }
+    setPokemons(filteredPokemons);
+}, [allPokemons, filterOption]);
+
 
   // Función para avanzar a la página siguiente
   const nextPage = () => {
@@ -56,24 +71,23 @@ function Grid() {
     }
   };
   
-  // Función para ordenar el array de mayor a menor
-  const sortAscending = () => {
-    const sortedPokemons = [...pokemons].sort((a, b) => a.id - b.id);
-    setPokemons(sortedPokemons);
-  }
-
-  // Función para ordenar el array de menor a mayor
-  const sortDescending = () => {
-    const sortedPokemons = [...pokemons].sort((a, b) => b.id - a.id);
-    setPokemons(sortedPokemons);
-    console.log(allTypes)
-  }
+  
 
   // Función para ordenar el array alfabéticamente
-  const sortAlphabetically = () => {
-    const sortedPokemons = [...pokemons].sort((a, b) => a.name.localeCompare(b.name));
+  const [sortAscending, setSortAscending] = useState(true);
+
+const sortAlphabetically = () => {
+    const sortedPokemons = [...pokemons].sort((a, b) => {
+        if (sortAscending) {
+            return a.name.localeCompare(b.name);
+        } else {
+            return b.name.localeCompare(a.name);
+        }
+    });
     setPokemons(sortedPokemons);
-  }
+    setSortAscending(!sortAscending);
+}
+
 
   const sortAscendingAttack = () => {
     const sortedPokemons = [...pokemons].sort((a, b) => a.attack - b.attack);
@@ -87,6 +101,8 @@ function Grid() {
     setPokemons(sortedPokemons);
     console.log(sortedPokemons);
   }
+
+
 
   // Función para manejar el cambio en la selección del tipo de pokemon
   const handleTypeChange = event => {
@@ -122,12 +138,17 @@ function Grid() {
         ))}
        </select>
        </fieldset>
-
+       
         <fieldset>
-        <legend>ID</legend>
-        <button onClick={sortAscending}>-</button>
-        <button onClick={sortDescending}>+</button>
+          <legend>Filtro DB</legend>
+        <select value={filterOption} onChange={e => setFilterOption(e.target.value)}>
+          <option value="todos">todos</option>
+          <option value="solo los creados en la base de datos">solo los creados en la base de datos</option>
+          <option value="solo los traidos de la Api">solo los traidos de la Api</option>
+</select>
         </fieldset>
+
+        
 
 
         <fieldset>

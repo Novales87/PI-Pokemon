@@ -16,11 +16,23 @@ export function getAllTypes(){
   
 }
 
+
 export function deletePokemon(pokemonId) {
     return async (dispatch) => {
-       // await axios.delete(`http://localhost:3001/pokemon/${pokemonId}`);
-        return dispatch({ type: "DELETE_POKEMON", payload: pokemonId });
+    if(!/^[a-zA-Z0-9]+$/.test(pokemonId)) {
+    try {
+    const response = await axios.delete(`http://localhost:3001/pokemon/${pokemonId}`);
+    if (response.status === 200) {
+    alert("Pokemon eliminado exitosamente");
     }
-}
+    dispatch({ type: "DELETE_POKEMON", payload: pokemonId });
+    } catch (error) {
+    alert("Error al eliminar Pokemon");
+    }
+    }else{
+    dispatch({ type: "DELETE_POKEMON", payload: pokemonId });
+    }
+    }
+    }
 
 

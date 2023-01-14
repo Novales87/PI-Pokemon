@@ -1,4 +1,4 @@
-.card{ 
+/*.card{ 
     text-align: center;
     width:200px;
     height: 250px;
@@ -9,14 +9,26 @@
     box-shadow: rgba(0, 0, 0, 0.849) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
     box-sizing: border-box;
     margin-top: 1%;
-    
-   
-    
-    }
+    } */
+
+    .card{
+      display: flex;
+      flex-direction: column;
+      text-align: center;
+      width:200px;
+      height: 250px;
+      border: 5px solid #7171728a;
+      border-radius: 5px;
+      background-color: #ffcd05d8;
+      position: relative;
+      box-shadow: rgba(0, 0, 0, 0.849) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+      box-sizing: border-box;
+      margin-top: 1%;
+      }
   
   .card img{ 
-    width:66%;
-    height: 50%;
+    max-width:150px;
+    max-height:100px;
     box-shadow: rgba(0, 0, 0, 0.644) 0px 15px 25px, rgba(0, 0, 0, 0.322) 0px 5px 10px;
     border-radius: 7px;
     padding: .5%;
@@ -25,11 +37,10 @@
     animation-delay: 1s;
     animation-duration: 2s;
     animation-iteration-count: 1;
-    
-   
+    margin-top: -1px;
   }
   
-  .card h3 { 
+  .card h5 { 
     box-shadow: rgba(0, 0, 0, 0.883) 0px 19px 38px, rgba(0, 0, 0, 0.116) 0px 15px 12px;
     color: rgba(255, 255, 255, 0.815);
     text-shadow: 8px 4px 2px rgba(0, 0, 0, 0.116);
@@ -45,17 +56,14 @@
     animation-delay: 3s;
     animation-duration: 1s;
     animation-iteration-count: 1;
-    
-  
-  
-  
+    margin-top: 10px;
   }
  
-  .card h6{
+  .card h7{
     font-weight: 900;
     width: 50%;
     height: auto;
-    padding: 2%;
+    padding: 5px;
     color:rgba(255, 255, 255, 0.733);
     font-size: .8em;
     font-weight: bold;
@@ -66,7 +74,7 @@
     border-radius: 5px;
     background-color: #2B74BA;
     box-shadow: rgba(0, 0, 0, 0.801) 0px 14px 30px, rgba(0, 0, 0, 0.308) 0px 15px 12px;
-    margin-top: 2%;
+    margin-top: 15px;
   }
  
   
@@ -78,13 +86,27 @@
     margin-top: .5%;
 
   }
-
+  
+  .card botton{
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background-color: red;
+    padding: 3px;
+    border-radius: 3px;
+    color: white;
+    font-size: 10px;
+    }
 
   /*.card img:hover{
     animation-name: latido;
     animation-duration: 2s;
     animation-iteration-count: 2;
   }*/
+
+  .card botton:hover{
+    transform:scale(1.5)
+}
 
   @keyframes latido {
     50% {

@@ -301,7 +301,7 @@ const [inputValue, setInputValue] = useState('');
     setInputValue(input);
   }
 
-  const handleSubmit = async (event) => {
+  /*const handleSubmit = async (event) => {
     event.preventDefault();
     try {
       await axios.post('http://localhost:3001/types', { type: inputValue });
@@ -313,7 +313,23 @@ const [inputValue, setInputValue] = useState('');
     }
     
   }
+*/
 
+const handleSubmit = async (event) => {
+  event.preventDefault();
+  if (!inputValue) {
+      setResponseMessage(<p>No se puede enviar un valor vacío</p>);
+      return;
+  }
+  try {
+    await axios.post('http://localhost:3001/types', { type: inputValue });
+    setResponseMessage(<p>Tipo creado con éxito</p>);
+    setInputValue('');
+    dispatch(getAllTypes());
+  } catch (err) {
+    setResponseMessage(<p>Error al crear tipo, verifique que no exista el tipo</p>);
+  }
+}
 
   return (
     <div className={style.Padre} >

@@ -33,13 +33,13 @@ const Detail = () => {
   
   useEffect(() => {
     let url = '';
-if (!isNaN(id)) {
-  url = `http://localhost:3001/pokemon/${id}`;
-} else if(/^[a-zA-Z-]+$/.test(id)) {
-  url = `http://localhost:3001/pokemon/name/${id}`;
-}else {
-  url = `http://localhost:3001/pokemon/${id}`;
-}
+    if (!isNaN(id)) {
+      url = `http://localhost:3001/pokemon/${id}`;
+    } else if(/^[a-zA-Z-]+$/.test(id)) {
+      url = `http://localhost:3001/pokemon/name/${id}`;
+    }else {
+      url = `http://localhost:3001/pokemon/${id}`;
+    }
     axios.get(url)
       .then(response => {
         setPokemon(response.data);
@@ -47,12 +47,14 @@ if (!isNaN(id)) {
       .catch(error => {
         setError(error);
       });
-  }, [id]);
+      console.log(error);
+  }, [id, error]);
 
 
   if (error) {
     return <div className={style.Detail_container}>
-    <h1>Pokemon {id} {error.response.data }</h1>
+    <h1>Pokémon " {id} " No encontrado o inexistente </h1>
+    <p>{error.response.data }</p>
     <Link to='/home'>
     <button>Home</button>
     </Link>
