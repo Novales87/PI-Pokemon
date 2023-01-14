@@ -142,34 +142,65 @@ async function getPokemonById(req, res, next) {
       next(err);
       }
       }
-
-
-
-      async function getPokemonByName(name) {
-        let pokemon;
-    
-        try { 
-            const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${name}`); 
-            const data = response.data; 
-    
-            pokemon = { 
-                id: data.id, 
-                name: data.name, 
-                types: data.types.map(type => type.type.name), 
-                image: data.sprites.front_default, 
-                attack: data.stats[4].base_stat, 
-                defense: data.stats[3].base_stat, 
-                height: data.height, 
-                hp: data.stats[5].base_stat, 
-                speed: data.stats[0].base_stat, 
-                weight: data.weight     
-             };     
-    
-        } catch (error) {   console.log(error);   return error; }        
-    
-        return pokemon;    
-    }
-
+      
+      async function getPokemonByName(req, res, next) {
+        try {
+          // Obtenemos el nombre del Pokémon desde los parámetros de la ruta
+          const { name } = req.params;
+          let pokemon;
+          // Buscamos el Pokémon en la base de datos
+          pokemon = await Pokemon.findOne({
+            where: { name },
+            include: [{
+              model: Types,
+              attributes: ['name']
+            }]
+          });
+          // si no se encuentra en la base de datos
+          if (!pokemon) {
+            // Buscamos en la API
+            const apiPokemon = await axios.get(`https://pokeapi.co/api/v2/pokemon/${name}`, headers);
+            // Procesamos la respuesta de la API
+            pokemon = {
+              id: apiPokemon.data.id,
+              name: apiPokemon.data.name,
+              types: apiPokemon.data.types.map(el => el.type.name),
+              image: apiPokemon.data.sprites.other.home.front_default,
+              attack: apiPokemon.data.stats[1].base_stat,
+              defense: apiPokemon.data.stats[2].base_stat,
+              height: apiPokemon.data.height,
+              hp: apiPokemon.data.stats[0].base_stat,
+              speed: apiPokemon.data.stats[5].base_stat,
+              weight: apiPokemon.data.weight,
+            }
+          } else {
+              pokemon = {
+                id: pokemon.id,
+                name: pokemon.name,
+                types: pokemon.types.map(el => el.name),
+                image: pokemon.image,
+                attack: pokemon.attack,
+                defense: pokemon.defense,
+                height: pokemon.height,
+                hp: pokemon.hp,
+                speed: pokemon.speed,
+                weight: pokemon.weight,
+              }
+          }
+          // Validamos si el Pokémon existe
+          if (!pokemon) {
+            res.status(404).json({ message: 'Pokemon not found' });
+          } else {
+            // Respondemos al cliente con el Pokémon
+            res.json(pokemon);
+          }
+        } catch (err) {
+          next(err);
+        }
+      }
+      
+      
+      
 
 
 

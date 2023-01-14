@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+/* import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
@@ -18,7 +18,37 @@ const Detail = () => {
       .catch(error => {
         setError(error);
       });
+  }, [id]); */
+  import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import style from './Detail.module.css' 
+import Cargando from '../images/cargando.gif'
+
+const Detail = () => {
+  const { id } = useParams(); // Obtienes el id de la ruta (ej. /pokemon/1)
+  const [pokemon, setPokemon] = useState(null);
+  const [error, setError] = useState(null);
+  
+  useEffect(() => {
+    let url = '';
+if (!isNaN(id)) {
+  url = `http://localhost:3001/pokemon/${id}`;
+} else if(/^[a-zA-Z-]+$/.test(id)) {
+  url = `http://localhost:3001/pokemon/name/${id}`;
+}else {
+  url = `http://localhost:3001/pokemon/${id}`;
+}
+    axios.get(url)
+      .then(response => {
+        setPokemon(response.data);
+      })
+      .catch(error => {
+        setError(error);
+      });
   }, [id]);
+
 
   if (error) {
     return <div className={style.Detail_container}>

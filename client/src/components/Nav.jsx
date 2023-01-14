@@ -21,7 +21,7 @@ function Nav() {
     event.preventDefault();
     // Redirigimos a la ruta '/pokemon/:id' con el valor del input en minúsculas
     // como parámetro 'id'
-    history.push(`/pokemon/name/${inputValue.toLowerCase()}`)
+    history.push(`/pokemon/${inputValue.toLowerCase()}`)
   }
 
   // Esta función se ejecuta al cambiar el valor del input

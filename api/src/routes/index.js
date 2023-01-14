@@ -18,6 +18,6 @@ const router = Router();
 router.use('/types', getAllTypes )
 router.use('/pokemons/:id',allPokemonsRoutes)
 router.use('/pokemon', allPokemonsRoutes )
-
+router.use('/pokemon/name/:name', allPokemonsRoutes);
 
 module.exports = router;

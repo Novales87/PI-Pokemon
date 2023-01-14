@@ -45,7 +45,7 @@ function PokeForm() {
 } */
 const [errorName, setErrorName] = useState('');
 
-const handleName = (event) => {
+/*const handleName = (event) => {
   const name = event.target.value;
   setErrorName('');
   if (!name) {
@@ -53,6 +53,25 @@ const handleName = (event) => {
     return;
   }
   if (!/^[a-zA-Z- ]*$/.test(name)) {
+    setErrorName("* solo letras y guiones medios");
+    return;
+  } 
+  setNewPokemon((prevPokemon) => {
+    return {
+      ...prevPokemon,
+      name: name,
+    }
+  });
+}*/
+
+const handleName = (event) => {
+  const name = event.target.value.trim();
+  setErrorName('');
+  if (!name) {
+    setErrorName('*Agrega un nombre');
+    return;
+  }
+  if (!/^[a-zA-Z-]*$/.test(name)) {
     setErrorName("* solo letras y guiones medios");
     return;
   } 
