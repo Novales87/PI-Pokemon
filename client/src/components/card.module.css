@@ -47,7 +47,7 @@
     margin-top: 10px;
   }
  
-  .card h7{
+  .card h6{
     font-weight: 900;
     width: 50%;
     height: auto;
@@ -75,7 +75,7 @@
 
   }
   
-  .card botton{
+  .card button{
     position: absolute;
     top: 5px;
     right: 5px;
@@ -84,9 +84,10 @@
     border-radius: 3px;
     color: white;
     font-size: 10px;
+    border: none;
     }
 
-  .card botton:hover{
+  .card button:hover{
     transform:scale(1.5)
 }
 

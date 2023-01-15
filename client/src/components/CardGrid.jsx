@@ -142,8 +142,8 @@ const sortAlphabetically = () => {
           <legend>Filtro DB</legend>
         <select value={filterOption} onChange={e => setFilterOption(e.target.value)}>
           <option value="todos">todos</option>
-          <option value="solo los creados en la base de datos">solo los creados en la base de datos</option>
-          <option value="solo los traidos de la Api">solo los traidos de la Api</option>
+          <option value="solo los creados en la base de datos">Base de Datos</option>
+          <option value="solo los traidos de la Api">Api</option>
 </select>
         </fieldset>
 

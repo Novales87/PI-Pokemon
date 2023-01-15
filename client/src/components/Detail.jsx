@@ -6,7 +6,7 @@ import style from './Detail.module.css'
 import Cargando from '../images/cargando.gif'
 
 const Detail = () => {
-  const { id } = useParams(); // Obtienes el id de la ruta (ej. /pokemon/1)
+  const { id } = useParams(); 
   const [pokemon, setPokemon] = useState(null);
   const [error, setError] = useState(null);
   

@@ -228,7 +228,6 @@ const send = () => {
     // Send the newPokemon object to the server
     axios.post("http://localhost:3001/pokemon", newPokemon)
       .then((response) => {
-        setRes(<p></p>);
         dispatch(getAllPokemons());
         setRes(<p>{newPokemon.name} Creado con exito</p>);
       })

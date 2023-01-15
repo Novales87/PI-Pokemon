@@ -17,12 +17,12 @@ const PokeCard = ({name, types, img,id}) => {
   return (
     
        <div className={style.card} key={name}>
-        <botton onClick={() => onClose(id)}>X</botton>
+        <button onClick={() => onClose(id)}>X</button>
        <h5>{name.toUpperCase()}</h5>
        <Link to={`/pokemon/${id}`}>
   <img src={img} alt={name}/>
 </Link>
-        <h7> {types.join(', ')}</h7>
+        <h6> {types.join(', ')}</h6>
       </div>
    
   )
