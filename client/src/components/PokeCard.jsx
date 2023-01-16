@@ -16,8 +16,8 @@ const PokeCard = ({name, types, img,id}) => {
 
   return (
     
-       <div className={style.card} key={name}>
-        <button onClick={() => onClose(id)}>X</button>
+    <div className={style.card} key={name}>
+    <button onClick={() => onClose(id)}>X</button>
        <h5>{name.toUpperCase()}</h5>
        <Link to={`/pokemon/${id}`}>
   <img src={img} alt={name}/>

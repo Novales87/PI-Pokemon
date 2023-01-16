@@ -8,13 +8,13 @@ import axios from 'axios';
 function PokeForm() {
  const dispatch = useDispatch();
  const [newPokemon, setNewPokemon] = useState({
-  name:"",
-  hp:'',
-  attack: '',
-  defense: '',
-  speed:'',
-  height:'',
-  weight:'',
+  name:" ",
+  hp:0,
+  attack: 0,
+  defense: 0,
+  speed:0,
+  height:0,
+  weight:0,
   typeIds:[],
   image:''
  })
@@ -29,8 +29,10 @@ function PokeForm() {
 const [errorName, setErrorName] = useState('');
 
 
+const [nameInput, setNameInput] = useState("");
 const handleName = (event) => {
-  const name = event.target.value.trim();
+  const name = event.target.value.trim().toLowerCase();
+  setNameInput(event.target.value.trim());
   setErrorName('');
   if (!name) {
     setErrorName('*Agrega un nombre');
@@ -48,16 +50,17 @@ const handleName = (event) => {
   });
 }
 
+
+
 const [errorNumber, setErrorNumber] = useState('');
-const re = /^[0-9]{1,3}$/;
+const re = /^[0-9]{0,3}$/;
 
 const handleNumber = (event) => {
-  const number = parseInt(event.target.value);
-  if (!number) {
-    setErrorNumber('* Agregar vida');
-    return;
-  }
+  const number = event.target.value;
   setErrorNumber('');
+ 
+ 
+  
   if (!re.test(number)) {
     setErrorNumber("no puede estar vacio y admite hasta 3 cifras");
     return;
@@ -72,12 +75,9 @@ const handleNumber = (event) => {
 
 const [errorAttack, setErrorAttack] = useState('');
 const handleAttack = (event) => {
-  const attack = parseInt(event.target.value);
+  const attack = event.target.value;
   setErrorAttack('');
-  if (!attack) {
-    setErrorAttack('* Agregar Ataque');
-    return;
-  }
+ 
   if (!re.test(attack)) {
     setErrorAttack("solo números hasta 3 cifras");
     return;
@@ -89,14 +89,12 @@ const handleAttack = (event) => {
     }
   });
 }
+
 const [errorDef, setErrorDef] = useState('');
 const handleDef = (event) => {
-  const defense = parseInt(event.target.value);
+  const defense = event.target.value;
   setErrorDef('');
-  if (!defense) {
-    setErrorDef('* Agregar Defensa');
-    return;
-  }
+ 
   if (!re.test(defense)) {
     setErrorDef("solo números de hasta 3 cifras");
     return;
@@ -112,10 +110,7 @@ const [errorSpeed, setErrorSpeed] = useState('');
 const handleSpeed = (event) => {
   const speed = parseInt(event.target.value);
   setErrorSpeed('');
-  if (!speed) {
-    setErrorSpeed('* Agregar Velocidad');
-    return;
-  }
+ 
   if (!re.test(speed)) {
     setErrorSpeed("solo números de hasta 3 cifras");
     return;
@@ -130,12 +125,9 @@ const handleSpeed = (event) => {
 
 const [errorHeight, setErrorHeight] = useState('');
 const handleHeight = (event) => {
-  const height = parseInt(event.target.value);
+  const height = event.target.value;
   setErrorHeight('');
-  if (!height) {
-    setErrorHeight('* Agregar Altura');
-    return;
-  }
+  
   if (!re.test(height)) {
     setErrorHeight("solo números de hasta 3 cifras");
     return;
@@ -150,12 +142,9 @@ const handleHeight = (event) => {
 
 const [errorWeight, setErrorWeight] = useState('');
 const handleWeight = (event) => {
-  const weight = parseInt(event.target.value);
+  const weight = event.target.value;
   setErrorWeight('');
-  if (!weight) {
-    setErrorWeight('* Agregar Peso');
-    return;
-  }
+ 
   if (!re.test(weight)) {
     setErrorWeight("solo números de hasta 3 cifras");
     return;
@@ -175,7 +164,7 @@ const handleTypeChange = (event) => {
     let id = parseInt(event.target.value);
     setSelectedTypes([...selectedTypes, id]);
     setNewPokemon({ ...newPokemon, typeIds: [...newPokemon.typeIds, id] });
-  } else if (selectedTypes.length <= 2) {
+  } else if (selectedTypes.length <= 3) {
     let id = parseInt(event.target.value);
     setSelectedTypes([...selectedTypes, id]);
     setNewPokemon({ ...newPokemon, typeIds: [...newPokemon.typeIds, id] });
@@ -183,7 +172,7 @@ const handleTypeChange = (event) => {
       alert("Tipos agregados: " + newPokemon.typeIds[0] + ' ' + newPokemon.typeIds[1] + ' ' + newPokemon.typeIds[2]);
     }
   } else {
-    alert("Solo se pueden seleccionar 3 tipos");
+    alert("Solo se pueden seleccionar hasta 3 tipos" );
   }
   console.log(newPokemon);
 };
@@ -209,6 +198,7 @@ const handleImage = (event) => {
   }
   console.log(newPokemon);
 };
+
 const [res, setRes] = useState('');
 const send = () => {
   const missingFields = [];
@@ -220,22 +210,21 @@ const send = () => {
   }
 
 
-  // Check if there are any missing fields
+  // Comprueba si faltan campos
   if (missingFields.length > 0) {
     // Show an alert with the missing fields
     alert(`Completa todos los campos: ${missingFields.join(", ")}`);
   } else {
-    // Send the newPokemon object to the server
-    axios.post("http://localhost:3001/pokemon", newPokemon)
+    // Envía el objeto newPokemon al servidor
+    axios.post("http://localhost:3001/pokemons", newPokemon)
       .then((response) => {
         dispatch(getAllPokemons());
-        setRes(<p>{newPokemon.name} Creado con exito</p>);
+        setRes(<p>{nameInput} Creado con exito</p>);
       })
       .catch((error) => {
+        setRes(<p>{nameInput} ya existe</p>);
         console.log(error);
-      });
-   
-      
+      }); 
   }
   
 }
@@ -270,10 +259,10 @@ const handleSubmit = async (event) => {
     <div className={style.Padre} >
       <fieldset>
         <h2>Crear Pokémon</h2>
-        {res !== "" && <p>{res}</p>}
+        {res !== " " && <p>{res}</p>}
         <label>Nombre</label>
-        {errorName !== "" && <p>{errorName}</p>}
-        <input key="name" type="text" value={newPokemon.name} onChange={handleName} onBlur={handleName} />
+        {errorName !== " " && <p>{errorName}</p>}
+        <input key="name" type="text" value={nameInput} onChange={handleName} onBlur={handleName} />
 
        <label>vida</label>
        {errorNumber !== "" && <p>{errorNumber}</p>}
@@ -311,9 +300,11 @@ const handleSubmit = async (event) => {
 
        <label>Tipo</label>
        <select onChange={handleTypeChange}>
-  {allTypes.map((type) => (
+         <option value="" >Seleccione un tipo</option>
+  {
+  allTypes.map((type) => (
     <option key={type.id} value={type.id} disabled={selectedTypes.includes(type.id)}>
-      {type.name}
+      {type.id} {type.name}
     </option>
   ))}
 </select>

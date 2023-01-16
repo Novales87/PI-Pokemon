@@ -11,8 +11,8 @@ const allPokemonsRoutes = require('./allPokemonsRoutes.js');
 const router = Router();
 
 router.use('/types', getAllTypes )
-router.use('/pokemons/:id',allPokemonsRoutes)
-router.use('/pokemon', allPokemonsRoutes )
-router.use('/pokemon/name/:name', allPokemonsRoutes);
+router.use('/pokemon/:id',allPokemonsRoutes)
+router.use('/pokemons', allPokemonsRoutes )
+router.use('/pokemon/name?name', allPokemonsRoutes);
 
 module.exports = router;

@@ -64,7 +64,7 @@ async function getPokemons (req, res, next) {
       }
 
 
-async function savePokemon(req, res) {
+/*async function savePokemon(req, res) {
   try {
       const { name, hp, attack, defense, speed, height, weight, image, typeIds } = req.body;
       // Crear el Pokemon
@@ -75,7 +75,25 @@ async function savePokemon(req, res) {
   } catch (error) {
       res.status(500).json({ message: 'Error', error });
   }
+}*/
+async function savePokemon(req, res) {
+  try {
+      const { name, hp, attack, defense, speed, height, weight, image, typeIds } = req.body;
+      // buscar Pokemon existente con el mismo nombre
+      const existingPokemon = await Pokemon.findOne({ where: { name } });
+      if (existingPokemon) {
+          return res.status(409).json({ message: 'Pokemon already exists' });
+      }
+      // Crear el Pokemon
+      const newPokemon = await Pokemon.create({ name, hp, attack, defense, speed, height, weight, image });
+      // agregar relaciones con los tipos
+      await newPokemon.addTypes(typeIds);
+      res.json({ message: 'Pokemon created successfully' });
+  } catch (error) {
+      res.status(500).json({ message: 'Error', error });
+  }
 }
+
 
 async function getPokemonById(req, res, next) {
   try {

@@ -13,11 +13,11 @@ const Detail = () => {
   useEffect(() => {
     let url = '';
     if (!isNaN(id)) {
-      url = `http://localhost:3001/pokemon/${id}`;
+      url = `http://localhost:3001/pokemons/${id}`;
     } else if(/^[a-zA-Z-]+$/.test(id)) {
-      url = `http://localhost:3001/pokemon/name/${id}`;
+      url = `http://localhost:3001/pokemons/name/${id}`;
     }else {
-      url = `http://localhost:3001/pokemon/${id}`;
+      url = `http://localhost:3001/pokemons/${id}`;
     }
     axios.get(url)
       .then(response => {
