@@ -16,10 +16,10 @@ function Grid() {
   const allTypes = useSelector(state => state.types);
   const [pokemons, setPokemons] = useState(allPokemons);
   const [filterOption, setFilterOption] = useState("todos");
-
+  const[api, setApi] = useState('todos')
 
     // Inicializa el estado del tipo de pokemon seleccionado
-    const [selectedType, setSelectedType] = useState("");
+   // const [selectedType, setSelectedType] = useState("");
 
   const dispatch = useDispatch();
 
@@ -49,6 +49,39 @@ function Grid() {
     setCurrentPage(1)
     
 }, [allPokemons, filterOption]);
+
+useEffect(()=>{
+  if(api === "todos" && filterOption === 'todos'){
+    setPokemons(allPokemons);
+  }
+  if(api === "todos" && filterOption !== 'todos'){
+    const filteredPokemons = allPokemons.filter(pokemon => pokemon.types.includes(filterOption));
+    setPokemons(filteredPokemons);
+  }
+  if(api !== "todos" && filterOption === 'todos'){
+    let poke= [];
+    if(api==='db'){
+      
+      poke = allPokemons.filter(pokemon=> typeof pokemon.id === 'string');
+
+    } else {
+      poke = allPokemons.filter(pokemon=> typeof pokemon.id !== 'string');
+    }
+    setPokemons(poke)
+  }
+  if(filterOption !== 'todos' && api !=='todos'){
+   let poke = [];
+   const filteredPokemons = allPokemons.filter(pokemon => pokemon.types.includes(filterOption));
+   if(api==='db'){
+      
+    poke = filteredPokemons.filter(pokemon=> typeof pokemon.id === 'string');
+
+  } else {
+    poke = filteredPokemons.filter(pokemon=> typeof pokemon.id !== 'string');
+  }
+  setPokemons(poke);
+  }
+},[api, filterOption, allPokemons])
 
 
   // Función para avanzar a la página siguiente
@@ -103,7 +136,7 @@ const sortAlphabetically = () => {
 
 
   // Función para manejar el cambio en la selección del tipo de pokemon
-  const handleTypeChange = event => {
+  /*const handleTypeChange = event => {
     setSelectedType(event.target.value);
     // Filtra la lista de pokemones en función del tipo seleccionado
     if (event.target.value) {
@@ -115,8 +148,9 @@ const sortAlphabetically = () => {
     
       setPokemons(allPokemons);
       
+      
     }
-  }
+  }*/
 
   if (allPokemons.length === 0) {
     return <div className={styles.cargando}>
@@ -132,8 +166,8 @@ const sortAlphabetically = () => {
 
       <fieldset>
          <legend>Type</legend>
-       <select  value={selectedType} onChange={handleTypeChange}>
-          <option value="">All</option>
+       <select  value={filterOption} onChange={(event)=>{setFilterOption(event.target.value)}}>
+          <option value="todos">All</option>
         {allTypes.map(type => (
           <option key={type.id} value={type.name}>{type.id}. {type.name}</option>
         ))}
@@ -142,10 +176,10 @@ const sortAlphabetically = () => {
        
         <fieldset>
           <legend>Filter DB/Api</legend>
-        <select value={filterOption} onChange={e => setFilterOption(e.target.value)}>
+        <select value={api} onChange={e => setApi(e.target.value)}>
           <option value="todos">ALL</option>
-          <option value="solo los creados en la base de datos">DB</option>
-          <option value="solo los traidos de la Api">API</option>
+          <option value="db">DB</option>
+          <option value="Api">API</option>
 </select>
         </fieldset>
 

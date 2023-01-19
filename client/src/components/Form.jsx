@@ -1,6 +1,6 @@
 import { getAllTypes, getAllPokemons } from '../redux/actions';
 import style from './Form.module.css';
-import { useState} from 'react';
+import { useState, useEffect} from 'react';
 import { useSelector,useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
@@ -19,14 +19,16 @@ function PokeForm() {
   image:''
  })
  
-
+useEffect(()=>{
+  dispatch(getAllTypes())
+},[dispatch])
  
   
   const allTypes = useSelector(state => state.types);
   
 const [errorName, setErrorName] = useState('');
 
-
+//***************** control de Name   **************************** */
 const [nameInput, setNameInput] = useState("");
 const handleName = (event) => {
   const name = event.target.value.trim().toLowerCase();
@@ -48,7 +50,7 @@ const handleName = (event) => {
   });
 }
 
-
+//*******************control hp*********** */
 
 const [errorNumber, setErrorNumber] = useState('');
 const re = /^[0-9]{0,3}$/;
@@ -71,6 +73,8 @@ const handleNumber = (event) => {
   });
 }
 
+//************* control  attack  **************************************** */
+
 const [errorAttack, setErrorAttack] = useState('');
 const handleAttack = (event) => {
   const attack = event.target.value;
@@ -88,6 +92,8 @@ const handleAttack = (event) => {
   });
 }
 
+//****************** Control Def ********************************** */
+
 const [errorDef, setErrorDef] = useState('');
 const handleDef = (event) => {
   const defense = event.target.value;
@@ -104,6 +110,9 @@ const handleDef = (event) => {
     }
   });
 }
+
+//*****************Control Speed  ************************** */
+
 const [errorSpeed, setErrorSpeed] = useState('');
 const handleSpeed = (event) => {
   const speed = event.target.value;
@@ -120,7 +129,7 @@ const handleSpeed = (event) => {
     }
   });
 }
-
+//*********************** control height  ******************************** */
 const [errorHeight, setErrorHeight] = useState('');
 const handleHeight = (event) => {
   const height = event.target.value;
@@ -137,7 +146,7 @@ const handleHeight = (event) => {
     }
   });
 }
-
+//********************* control Weight    ************************************ */
 const [errorWeight, setErrorWeight] = useState('');
 const handleWeight = (event) => {
   const weight = event.target.value;
@@ -155,9 +164,37 @@ const handleWeight = (event) => {
   });
 }
 
+//**************Control Types***************** */
+
 const [selectedTypes, setSelectedTypes] = useState([]);
 
+useEffect(()=>{
+  if (selectedTypes.length === 3) {
+    alert('maximo 3 types');
+  }
+},[selectedTypes])
+
+
 const handleTypeChange = (event) => {
+  let id = parseInt(event.target.value);
+  if (selectedTypes.length === 3 && selectedTypes.indexOf(id) === -1) {
+    return;
+  } else {
+    if (selectedTypes.indexOf(id) === -1) {
+      setSelectedTypes([...selectedTypes, id]);
+      setNewPokemon({ ...newPokemon, typeIds: [...newPokemon.typeIds, id] });
+    } else {
+      setSelectedTypes(selectedTypes.filter((type) => type !== id));
+      setNewPokemon({ ...newPokemon, typeIds: newPokemon.typeIds.filter((type) => type !== id) });
+    }
+  }
+  console.log(newPokemon.typeIds);
+};
+
+
+
+
+/*const handleTypeChange = (event) => {
   let id = parseInt(event.target.value);
   if (selectedTypes.length === 3) {
     alert("Solo se pueden seleccionar hasta 3 tipos");
@@ -165,16 +202,14 @@ const handleTypeChange = (event) => {
     if (selectedTypes.indexOf(id) === -1) {
       setSelectedTypes([...selectedTypes, id]);
       setNewPokemon({ ...newPokemon, typeIds: [...newPokemon.typeIds, id] });
-      if (selectedTypes.length === 2) {
-        alert("Tipos agregados: " + newPokemon.typeIds[0] + ' ' + newPokemon.typeIds[1] + ' ' + newPokemon.typeIds[2]);
-      }
+      
     }
   }
-  console.log(newPokemon);
-};
+  console.log(newPokemon.typeIds);
+};*/
 
 
-
+//****************** control URL********************************* */
 
 const [errorImage, setErrorImage] = useState('');
 const handleImage = (event) => {
@@ -196,6 +231,8 @@ const handleImage = (event) => {
   console.log(newPokemon);
 };
 
+
+//******************* control boton enviar   ************************************* */
 const [res, setRes] = useState('');
 const send = () => {
   const missingFields = [];
@@ -248,7 +285,7 @@ const [inputValue, setInputValue] = useState('');
     
   }
 
-
+//************* control input del tipo y boton crear tipo  ************* */
 const handleSubmit = async (event) => {
   event.preventDefault();
   if (!inputValue) {
@@ -273,75 +310,88 @@ const handleSubmit = async (event) => {
 
 
 
-
+//****** RETURN   ***** */
   return (
     <div className={style.Padre} >
+     
+     <div>
+      {<h3>Types Ids: { selectedTypes.join(' , ')}</h3>}
+     </div>
+
+
       <fieldset>
         <h2>Create New Pokémon</h2>
-        {res !== " " && <p>{res}</p>}
+        
+{/************************** name ************************************ */ }       {res !== " " && <p>{res}</p>}
         <label>Name</label>
         {errorName !== " " && <p>{errorName}</p>}
         <input key="name" type="text" value={nameInput} onChange={handleName} onBlur={handleName} />
 
+{/*********************** hp  ********************************* */}
        <label>HP</label>
        {errorNumber !== "" && <p>{errorNumber}</p>}
        <input key="hp" type="number" value={newPokemon.hp} onChange={handleNumber} onBlur={handleNumber} />
-       
+  {/******************** attack ************************************ */}     
        <label >Attack</label>
        {errorAttack !== "" && <p>{errorAttack}</p>}
        <input key="attack" type="number" value={newPokemon.attack} onChange={handleAttack} onBlur={handleAttack} />
        
-
+{/******************* defense ******************** */}
        <label>Defense</label>
        {errorDef !== "" && <p>{errorDef}</p>}
        <input key="defense"  type="number" value={newPokemon.defense} onChange={handleDef} onBlur={handleDef} />
        
-
+{/******************** Speed ********************************** */}
        <label>Speed</label>
        {errorSpeed !== "" && <p>{errorSpeed}</p>}
        <input key="speed"  type="number" value={newPokemon.speed} onChange={handleSpeed} onBlur={handleSpeed}/>
-       
+{/***************** height ************************** */ }      
 
        <label>Height</label>
        {errorHeight !== "" && <p>{errorHeight}</p>}
        <input key="height"  type="number" value={newPokemon.height} onChange={handleHeight} onBlur={handleHeight} />
       
-
+{/****************weight *************** */}
        <label>weight</label>
        {errorWeight !== "" && <p>{errorWeight}</p>}
        <input key="weight" type="text" value={newPokemon.weight} onChange={handleWeight} onBlur={handleWeight} />
        
-
+{/******************imagen *************** */}
        <label>Imagen</label>
        {errorImage !== "" && <p>{errorImage}</p>}
       <input key="image" value={newPokemon.image} onChange={handleImage} onBlur={handleImage} type="text"/>
       
-
+{/************** input types **********************/}
        <label>TypeIds</label>
        <select onChange={handleTypeChange}>
          <option value="" >Select a Id Type</option>
   {
   allTypes.map((type) => (
-    <option key={type.id} value={newPokemon.id} disabled={selectedTypes.includes(type.id)}>
+    <option key={type.id} value={newPokemon.id}  >
       {type.id} {type.name}
     </option>
   ))}
 </select>
 
-       
+ {/*******************boton enviar */ }     
        <button type="submit" onClick={send} >Create new Pokémon</button>
+
+  {/******************Crear Tipo*********************** */}     
        <fieldset className={style.Crear}>
       <h4>Create a new Type</h4>
       <input type="text" value={inputValue} onChange={handleInputChange} />
       <button onClick={handleSubmit}>Create</button>
       {responseMessage}
-    </fieldset>
-       
+    </fieldset>      
        </fieldset>
+
+  {/**************** boton home ******************************/ }    
        <Link to={'/home'}><button>Home</button></Link>
        
        
     </div>
+
+    
   )
 }
 export default PokeForm

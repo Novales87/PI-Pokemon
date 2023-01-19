@@ -31,24 +31,28 @@
   border: none;
   color: white;
   border-radius: 3px;
+  
 }
 
 input {
   border: 1px solid white;
+  margin: 1.5px;
 }
 
 .Padre .Crear{
-  margin: 5px;
+  margin: 2px;
   background-color:#E7B806;
   padding-left: 5px;
   padding-right: 5px;
-  color:beige
+  color:beige;
+  height: fit-content;
 }
 
 .Padre button:hover {
   background-color: #29689b;
   transform: scale(1.2);
   font-weight: 700;
+  
 }
 p{
   color: indigo;
@@ -56,5 +60,9 @@ p{
 }
 
 .Padre fieldset h2{
-margin: -10px;
+margin: 0px;
+}
+
+.Padre .label{
+  margin:0px;
 }
