@@ -5,7 +5,7 @@ import PokemonForm from './components/Form';
 import Nav from './components/Nav.jsx';
 import Detail from './components/Detail';
 import Landing from './components/Landing.jsx';
-import Error from './components/Error404.jsx';
+
 
 
 function App() {
@@ -21,7 +21,6 @@ function App() {
         <Nav />
         <Route path="/home" component={Grid} exact={true} />
       </Route>
-      <Route component={Error} ></Route>
     </Switch>
     
   </div>

@@ -37,12 +37,12 @@ function Nav() {
       <img src={Logo} alt="logo"/>
       <div className={style.busqueda}>
       {/* Al hacer clic en este enlace, se redirige a la ruta '/crear-pokemon' */}
-      <Link to="/crear-pokemon">Crear Pokémon</Link>
+      <Link to="/crear-pokemon">Create Pokémon</Link>
       {/* Al enviar el formulario, se ejecuta la función 'handleSubmit' */}
       <form onSubmit={handleSubmit}>
         {/* Al cambiar el valor del input, se ejecuta la función 'handleChange' */}
-        <input placeholder='Buscar' onChange={handleChange} value={inputValue} /> 
-        <button disabled={!inputValue}>Buscar</button>
+        <input placeholder='search' onChange={handleChange} value={inputValue} /> 
+        <button disabled={!inputValue}>search</button>
       </form>
 
       </div>

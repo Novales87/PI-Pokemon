@@ -26,8 +26,8 @@ const Detail = () => {
       .catch(error => {
         setError(error);
       });
-      console.log(error);
-  }, [id, error]);
+     
+  }, [id]);
 
 
   if (error) {
@@ -55,9 +55,9 @@ const Detail = () => {
     <img src={pokemon.image} alt={pokemon.id}/>
     <ul>
      <li>Id: {pokemon.id}</li>
-     <li>Altura: {pokemon.height}</li>
-     <li>Peso: {pokemon.weight} </li>
-     <li>Types: {pokemon.types.join(', ')}</li>
+     <li>Height: {pokemon.height}</li>
+     <li>Weight: {pokemon.weight} </li>
+     <li>Type: {pokemon.types.join(', ')}</li>
      <li>hp: {pokemon.hp} </li>
      <li> attack: {pokemon.attack} </li>
      <li>defense: {pokemon.defense} </li>

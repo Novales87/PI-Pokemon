@@ -1,6 +1,6 @@
 import { getAllTypes, getAllPokemons } from '../redux/actions';
 import style from './Form.module.css';
-import { useEffect, useState} from 'react';
+import { useState} from 'react';
 import { useSelector,useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
@@ -8,7 +8,7 @@ import axios from 'axios';
 function PokeForm() {
  const dispatch = useDispatch();
  const [newPokemon, setNewPokemon] = useState({
-  name:" ",
+  name:"",
   hp:0,
   attack: 0,
   defense: 0,
@@ -20,9 +20,7 @@ function PokeForm() {
  })
  
 
- useEffect(() => {
-      dispatch(getAllTypes());
-  }, [dispatch]);
+ 
   
   const allTypes = useSelector(state => state.types);
   
@@ -54,13 +52,13 @@ const handleName = (event) => {
 
 const [errorNumber, setErrorNumber] = useState('');
 const re = /^[0-9]{0,3}$/;
+const rex = /^[0-9]{0,4}$/;
 
 const handleNumber = (event) => {
   const number = event.target.value;
   setErrorNumber('');
  
- 
-  
+
   if (!re.test(number)) {
     setErrorNumber("no puede estar vacio y admite hasta 3 cifras");
     return;
@@ -108,7 +106,7 @@ const handleDef = (event) => {
 }
 const [errorSpeed, setErrorSpeed] = useState('');
 const handleSpeed = (event) => {
-  const speed = parseInt(event.target.value);
+  const speed = event.target.value;
   setErrorSpeed('');
  
   if (!re.test(speed)) {
@@ -145,8 +143,8 @@ const handleWeight = (event) => {
   const weight = event.target.value;
   setErrorWeight('');
  
-  if (!re.test(weight)) {
-    setErrorWeight("solo números de hasta 3 cifras");
+  if (!rex.test(weight)) {
+    setErrorWeight("solo números de hasta 4 cifras");
     return;
   } 
   setNewPokemon((prevPokemon) => {
@@ -160,22 +158,21 @@ const handleWeight = (event) => {
 const [selectedTypes, setSelectedTypes] = useState([]);
 
 const handleTypeChange = (event) => {
-  if (selectedTypes.length === 0) {
-    let id = parseInt(event.target.value);
-    setSelectedTypes([...selectedTypes, id]);
-    setNewPokemon({ ...newPokemon, typeIds: [...newPokemon.typeIds, id] });
-  } else if (selectedTypes.length <= 3) {
-    let id = parseInt(event.target.value);
-    setSelectedTypes([...selectedTypes, id]);
-    setNewPokemon({ ...newPokemon, typeIds: [...newPokemon.typeIds, id] });
-    if (selectedTypes.length === 3) {
-      alert("Tipos agregados: " + newPokemon.typeIds[0] + ' ' + newPokemon.typeIds[1] + ' ' + newPokemon.typeIds[2]);
-    }
+  let id = parseInt(event.target.value);
+  if (selectedTypes.length === 3) {
+    alert("Solo se pueden seleccionar hasta 3 tipos");
   } else {
-    alert("Solo se pueden seleccionar hasta 3 tipos" );
+    if (selectedTypes.indexOf(id) === -1) {
+      setSelectedTypes([...selectedTypes, id]);
+      setNewPokemon({ ...newPokemon, typeIds: [...newPokemon.typeIds, id] });
+      if (selectedTypes.length === 2) {
+        alert("Tipos agregados: " + newPokemon.typeIds[0] + ' ' + newPokemon.typeIds[1] + ' ' + newPokemon.typeIds[2]);
+      }
+    }
   }
   console.log(newPokemon);
 };
+
 
 
 
@@ -209,25 +206,37 @@ const send = () => {
     }
   }
 
-
   // Comprueba si faltan campos
   if (missingFields.length > 0) {
-    // Show an alert with the missing fields
-    alert(`Completa todos los campos: ${missingFields.join(", ")}`);
+    // Muestra una alerta con los campos faltantes
+    alert(`Completa los campos: ${missingFields.join(", ")}`);
   } else {
     // Envía el objeto newPokemon al servidor
     axios.post("http://localhost:3001/pokemons", newPokemon)
       .then((response) => {
         dispatch(getAllPokemons());
-        setRes(<p>{nameInput} Creado con exito</p>);
+        setRes(response.data.message);
+        console.log(response);
+        setNameInput("");
+        setNewPokemon({
+          name:"",
+          hp:0,
+          attack: 0,
+          defense: 0,
+          speed:0,
+          height:0,
+          weight:0,
+          typeIds:[],
+          image:''
+         })
       })
       .catch((error) => {
-        setRes(<p>{nameInput} ya existe</p>);
+        setRes(<p>{error.response.data.message}</p>);
         console.log(error);
       }); 
   }
-  
 }
+
 
 const [inputValue, setInputValue] = useState('');
   const [responseMessage, setResponseMessage] = useState('');
@@ -236,6 +245,7 @@ const [inputValue, setInputValue] = useState('');
     let input = event.target.value;
     input = input.replace(/[^a-zA-Z\s-]/g, '');
     setInputValue(input);
+    
   }
 
 
@@ -246,75 +256,84 @@ const handleSubmit = async (event) => {
       return;
   }
   try {
-    await axios.post('http://localhost:3001/types', { type: inputValue });
-    setResponseMessage(<p>Tipo creado con éxito</p>);
+    const response = await axios.post('http://localhost:3001/types', { type: inputValue });
+    console.log(response);
+    setResponseMessage(<p>Tipo creado con éxito!</p>);
     setInputValue('');
     dispatch(getAllTypes());
-  } catch (err) {
-    setResponseMessage(<p>Error al crear tipo, verifique que no exista el tipo</p>);
+  } catch (error) {
+    if(error.response && error.response.status === 409) {
+      setResponseMessage(<p>Tipo ya existe</p>);
+    } else {
+      console.log(error);
+      setResponseMessage(<p>Ocurrió un error: {error.message}</p>);
+    }
   }
 }
+
+
+
 
   return (
     <div className={style.Padre} >
       <fieldset>
-        <h2>Crear Pokémon</h2>
+        <h2>Create New Pokémon</h2>
         {res !== " " && <p>{res}</p>}
-        <label>Nombre</label>
+        <label>Name</label>
         {errorName !== " " && <p>{errorName}</p>}
         <input key="name" type="text" value={nameInput} onChange={handleName} onBlur={handleName} />
 
-       <label>vida</label>
+       <label>HP</label>
        {errorNumber !== "" && <p>{errorNumber}</p>}
        <input key="hp" type="number" value={newPokemon.hp} onChange={handleNumber} onBlur={handleNumber} />
        
-       <label >Ataque</label>
+       <label >Attack</label>
        {errorAttack !== "" && <p>{errorAttack}</p>}
        <input key="attack" type="number" value={newPokemon.attack} onChange={handleAttack} onBlur={handleAttack} />
        
 
-       <label>Defensa</label>
+       <label>Defense</label>
        {errorDef !== "" && <p>{errorDef}</p>}
        <input key="defense"  type="number" value={newPokemon.defense} onChange={handleDef} onBlur={handleDef} />
        
 
-       <label>velocidad</label>
+       <label>Speed</label>
        {errorSpeed !== "" && <p>{errorSpeed}</p>}
        <input key="speed"  type="number" value={newPokemon.speed} onChange={handleSpeed} onBlur={handleSpeed}/>
        
 
-       <label>Altura</label>
+       <label>Height</label>
        {errorHeight !== "" && <p>{errorHeight}</p>}
        <input key="height"  type="number" value={newPokemon.height} onChange={handleHeight} onBlur={handleHeight} />
       
 
-       <label>Peso</label>
+       <label>weight</label>
        {errorWeight !== "" && <p>{errorWeight}</p>}
        <input key="weight" type="text" value={newPokemon.weight} onChange={handleWeight} onBlur={handleWeight} />
        
 
        <label>Imagen</label>
        {errorImage !== "" && <p>{errorImage}</p>}
-      <input key="image" value={newPokemon.img} onChange={handleImage} type="text"/>
+      <input key="image" value={newPokemon.image} onChange={handleImage} onBlur={handleImage} type="text"/>
       
 
-       <label>Tipo</label>
+       <label>TypeIds</label>
        <select onChange={handleTypeChange}>
-         <option value="" >Seleccione un tipo</option>
+         <option value="" >Select a Id Type</option>
   {
   allTypes.map((type) => (
-    <option key={type.id} value={type.id} disabled={selectedTypes.includes(type.id)}>
+    <option key={type.id} value={newPokemon.id} disabled={selectedTypes.includes(type.id)}>
       {type.id} {type.name}
     </option>
   ))}
 </select>
 
        
-       <button type="submit" onClick={send} >Crear</button>
+       <button type="submit" onClick={send} >Create new Pokémon</button>
        <fieldset className={style.Crear}>
-      <h4>crear tipo</h4>
+      <h4>Create a new Type</h4>
       <input type="text" value={inputValue} onChange={handleInputChange} />
-      <button onClick={handleSubmit}>crear tipo</button>
+      <button onClick={handleSubmit}>Create</button>
       {responseMessage}
     </fieldset>
        

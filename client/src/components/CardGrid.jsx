@@ -35,11 +35,8 @@ function Grid() {
       dispatch(getAllPokemons());
       dispatch(getAllTypes());
     }
+    
   }, [dispatch, allPokemons]);
-
-  useEffect(() => {
-    setPokemons(allPokemons);
-  }, [allPokemons]);
 
   useEffect(() => {
     let filteredPokemons = allPokemons;
@@ -49,6 +46,8 @@ function Grid() {
         filteredPokemons = allPokemons.filter(pokemon => Number.isInteger(pokemon.id));
     }
     setPokemons(filteredPokemons);
+    setCurrentPage(1)
+    
 }, [allPokemons, filterOption]);
 
 
@@ -109,10 +108,13 @@ const sortAlphabetically = () => {
     // Filtra la lista de pokemones en función del tipo seleccionado
     if (event.target.value) {
       const filteredPokemons = allPokemons.filter(pokemon => pokemon.types.includes(event.target.value));
+      setCurrentPage(1)
       setPokemons(filteredPokemons);
     } else {
       // Si se selecciona la opción "Todos", muestra todos los pokemones
+    
       setPokemons(allPokemons);
+      
     }
   }
 
@@ -131,7 +133,7 @@ const sortAlphabetically = () => {
       <fieldset>
          <legend>Type</legend>
        <select  value={selectedType} onChange={handleTypeChange}>
-          <option value="">Todos</option>
+          <option value="">All</option>
         {allTypes.map(type => (
           <option key={type.id} value={type.name}>{type.id}. {type.name}</option>
         ))}
@@ -139,11 +141,11 @@ const sortAlphabetically = () => {
        </fieldset>
        
         <fieldset>
-          <legend>Filtro DB</legend>
+          <legend>Filter DB/Api</legend>
         <select value={filterOption} onChange={e => setFilterOption(e.target.value)}>
-          <option value="todos">todos</option>
-          <option value="solo los creados en la base de datos">Base de Datos</option>
-          <option value="solo los traidos de la Api">Api</option>
+          <option value="todos">ALL</option>
+          <option value="solo los creados en la base de datos">DB</option>
+          <option value="solo los traidos de la Api">API</option>
 </select>
         </fieldset>
 
@@ -151,7 +153,7 @@ const sortAlphabetically = () => {
 
 
         <fieldset>
-        <legend>Alf</legend>
+        <legend>Alphabetic</legend>
         <button onClick={sortAlphabetically}>A-Z</button>
         </fieldset>
         

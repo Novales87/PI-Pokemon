@@ -28,13 +28,21 @@ async function getPokemons (req, res, next) {
       }
     });
 
-    // Hacemos una solicitud a la API para obtener los Pokémones
-    const response = await axios.get('https://pokeapi.co/api/v2/pokemon?offset=0&limit=40', headers);
+    // solicitud a la API para obtener los Pokémones de una sola vez
+    //const response = await axios.get('https://pokeapi.co/api/v2/pokemon?offset=0&limit=40', headers);
 
-    // Procesamos la respuesta de la API y extraemos los nombres y URL de los Pokémones
-    const pokemonData = response.data.results;
+    // Procesa la respuesta de la API y extrae los nombres y URL de los Pokémones
+    //const pokemonData = response.data.results;
 
-    // Hacemos una solicitud a la URL de cada Pokémon para obtener sus detalles
+    const response1 = await axios.get('https://pokeapi.co/api/v2/pokemon?limit=20', headers);
+
+// Segunda llamada a la API para obtener los siguientes 20 pokemones
+const response2 = await axios.get(response1.data.next, headers);
+
+// Concaten los resultados de las dos llamadas
+const pokemonData = [...response1.data.results, ...response2.data.results];
+
+    // solicitud a la URL de cada Pokémon para obtener sus detalles
     const pokemonDetails = await Promise.all(pokemonData.map(async pokemon => {
       const detailsResponse = await axios.get(pokemon.url, headers);
       return {
@@ -64,18 +72,7 @@ async function getPokemons (req, res, next) {
       }
 
 
-/*async function savePokemon(req, res) {
-  try {
-      const { name, hp, attack, defense, speed, height, weight, image, typeIds } = req.body;
-      // Crear el Pokemon
-      const newPokemon = await Pokemon.create({ name, hp, attack, defense, speed, height, weight, image });
-      // agregar relaciones con los tipos
-      await newPokemon.addTypes(typeIds);
-      res.json({ message: 'Pokemon created successfully' });
-  } catch (error) {
-      res.status(500).json({ message: 'Error', error });
-  }
-}*/
+
 async function savePokemon(req, res) {
   try {
       const { name, hp, attack, defense, speed, height, weight, image, typeIds } = req.body;
@@ -158,7 +155,7 @@ async function getPokemonById(req, res, next) {
       }
       }
       
-      async function getPokemonByName(req, res, next) {
+     async function getPokemonByName(req, res, next) {
         try {
           // Obtenemos el nombre del Pokémon desde los parámetros de la ruta
           const { name } = req.params;
@@ -206,13 +203,16 @@ async function getPokemonById(req, res, next) {
           if (!pokemon) {
             res.status(404).json({ message: 'Pokemon not found' });
           } else {
-            // Respondemos al cliente con el Pokémon
+             //Responde al cliente con el Pokémon
             res.json(pokemon);
-          }
+         }
         } catch (err) {
           next(err);
         }
       }
+      
+      
+      
       
        
       async function deletePokemonById(req, res, next) {
